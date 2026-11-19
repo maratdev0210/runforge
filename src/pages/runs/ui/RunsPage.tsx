@@ -28,7 +28,6 @@ export function RunsPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <span className={styles.brandMark} aria-hidden="true">r<span>f</span></span>
           <span>RunForge</span>
         </div>
         <span className={styles.workspace}>Agent workspace</span>
