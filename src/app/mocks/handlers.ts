@@ -11,7 +11,6 @@ export function createRunsHandlers({ delayMs = 700 } = {}) {
       const shouldFail =
         url.searchParams.get('mockError') === '1' && !hasReturnedMockError
 
-      // Reserve the first error before waiting so concurrent requests can retry.
       if (shouldFail) {
         hasReturnedMockError = true
       }
