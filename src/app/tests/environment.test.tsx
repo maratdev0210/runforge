@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it, vi } from 'vitest'
 
-it('supports React rendering, DOM matchers and user interactions', async () => {
+it('поддерживает рендеринг React, проверки DOM и действия пользователя', async () => {
   const onClick = vi.fn()
   const user = userEvent.setup()
 

@@ -83,7 +83,7 @@ afterEach(() => {
   document.body.style.overflow = ''
 })
 
-it('shows loading, then runs with all statuses and formatted values', async () => {
+it('показывает загрузку, затем запуски со всеми статусами и отформатированными значениями', async () => {
   const request = deferredRuns()
   vi.mocked(getRuns).mockReturnValue(request.promise)
   render(<RunsPage />)
@@ -111,7 +111,7 @@ it('shows loading, then runs with all statuses and formatted values', async () =
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('shows an error and returns to loading during Retry before displaying data', async () => {
+it('показывает ошибку и повторную загрузку по Retry перед отображением данных', async () => {
   const retryRequest = deferredRuns()
   vi.mocked(getRuns)
     .mockRejectedValueOnce(new Error('Failed to load runs (HTTP 500). Please try again.'))
@@ -129,7 +129,7 @@ it('shows an error and returns to loading during Retry before displaying data', 
   expect(getRuns).toHaveBeenCalledTimes(2)
 })
 
-it('shows a distinct empty state for a successful empty response', async () => {
+it('показывает отдельное пустое состояние при успешном ответе без запусков', async () => {
   vi.mocked(getRuns).mockResolvedValue([])
   render(<RunsPage />)
 
@@ -140,7 +140,7 @@ it('shows a distinct empty state for a successful empty response', async () => {
   expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
 })
 
-it('opens details from a row, shows logs and result, and closes without reloading', async () => {
+it('открывает детали по строке, показывает логи и результат и закрывается без повторной загрузки', async () => {
   vi.mocked(getRuns).mockResolvedValue(sampleRuns)
   const user = userEvent.setup()
   render(<RunsPage />)
@@ -169,7 +169,7 @@ it('opens details from a row, shows logs and result, and closes without reloadin
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('opens with the keyboard, focuses Close and handles the native Escape cancel event', async () => {
+it('открывает детали с клавиатуры, переводит фокус на Close и обрабатывает событие отмены по Escape', async () => {
   vi.mocked(getRuns).mockResolvedValue([sampleRun])
   const user = userEvent.setup()
   render(<RunsPage />)
@@ -194,7 +194,7 @@ it('opens with the keyboard, focuses Close and handles the native Escape cancel 
   expect(opener).toHaveFocus()
 })
 
-it('closes on a backdrop click, but not on empty space inside the drawer', async () => {
+it('закрывает drawer по клику на подложку, но не на свободное место внутри панели', async () => {
   vi.mocked(getRuns).mockResolvedValue([sampleRun])
   const user = userEvent.setup()
   render(<RunsPage />)
@@ -209,7 +209,7 @@ it('closes on a backdrop click, but not on empty space inside the drawer', async
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 })
 
-it('handles missing duration and result without inventing values', async () => {
+it('корректно отображает отсутствие длительности и результата без вымышленных значений', async () => {
   vi.mocked(getRuns).mockResolvedValue([sampleRun])
   const user = userEvent.setup()
   render(<RunsPage />)
@@ -222,7 +222,7 @@ it('handles missing duration and result without inventing values', async () => {
   expect(within(dialog).queryByRole('heading', { name: 'Result' })).not.toBeInTheDocument()
 })
 
-it('shows zero duration and an explicit empty-logs message in details', async () => {
+it('показывает нулевую длительность и сообщение об отсутствии логов в деталях', async () => {
   vi.mocked(getRuns).mockResolvedValue([sampleRuns[3]])
   const user = userEvent.setup()
   render(<RunsPage />)
@@ -234,7 +234,7 @@ it('shows zero duration and an explicit empty-logs message in details', async ()
   expect(within(dialog).queryByLabelText('Run logs')).not.toBeInTheDocument()
 })
 
-it('ignores an outdated effect response under StrictMode', async () => {
+it('игнорирует устаревший ответ эффекта в StrictMode', async () => {
   const outdated = deferredRuns()
   const current = deferredRuns()
   vi.mocked(getRuns)
@@ -250,7 +250,7 @@ it('ignores an outdated effect response under StrictMode', async () => {
   expect(within(screen.getByRole('table')).getAllByRole('button')).toHaveLength(1)
 })
 
-it('restores the previous body overflow when unmounted with details open', async () => {
+it('восстанавливает прежний overflow у body при размонтировании с открытыми деталями', async () => {
   document.body.style.overflow = 'scroll'
   vi.mocked(getRuns).mockResolvedValue([sampleRun])
   const user = userEvent.setup()
@@ -309,7 +309,7 @@ it.each([
   ['Running', ['Invoice importer']],
   ['Succeeded', ['Daily reconciliation', 'Invoice matching']],
   ['Failed', ['Calendar review', 'Payment audit']],
-] as const)('filters by %s, marks the active button and restores All', async (label, expected) => {
+] as const)('фильтрует по статусу %s, выделяет активную кнопку и восстанавливает список через All', async (label, expected) => {
   const user = await renderControls()
   await user.click(screen.getByRole('button', { name: label }))
 
@@ -325,7 +325,7 @@ it.each([
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it.each(['Invoice', '  iNvOiCe  '])('searches by name with normalized query %j', async (query) => {
+it.each(['Invoice', '  iNvOiCe  '])('ищет по названию с нормализацией запроса %j', async (query) => {
   const user = await renderControls()
   await user.type(screen.getByRole('searchbox'), query)
 
@@ -335,7 +335,7 @@ it.each(['Invoice', '  iNvOiCe  '])('searches by name with normalized query %j',
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('searches by repository and combines it with the selected status', async () => {
+it('ищет по репозиторию совместно с выбранным статусом', async () => {
   const user = await renderControls()
   await user.type(screen.getByRole('searchbox'), 'LEDGER/')
   expect(visibleRunNames()).toEqual(['Invoice importer', 'Daily reconciliation', 'Invoice matching'])
@@ -345,7 +345,7 @@ it('searches by repository and combines it with the selected status', async () =
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('does not restrict results for whitespace and does not search branches, IDs, logs or results', async () => {
+it('не ограничивает выдачу по пробелам и не ищет по веткам, ID, логам или результатам', async () => {
   const user = await renderControls()
   const search = screen.getByRole('searchbox')
   await user.type(search, '   ')
@@ -362,7 +362,7 @@ it('does not restrict results for whitespace and does not search branches, IDs, 
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('clears a no-results query and status while preserving sort and unrelated URL values', async () => {
+it('сбрасывает поиск и статус при пустой выдаче, сохраняя сортировку и остальные параметры URL', async () => {
   window.history.replaceState(null, '', '/?mockError=1#runs')
   const user = await renderControls()
   await user.selectOptions(screen.getByRole('combobox', { name: 'Sort by' }), 'longest')
@@ -394,7 +394,7 @@ it.each([
   ['oldest', ['queued_old', 'succeeded_old', 'queued_recent', 'succeeded_recent', 'running', 'failed_first', 'failed_second']],
   ['longest', ['succeeded_recent', 'succeeded_old', 'running', 'failed_first', 'failed_second', 'queued_recent', 'queued_old']],
   ['shortest', ['failed_first', 'failed_second', 'running', 'succeeded_recent', 'succeeded_old', 'queued_recent', 'queued_old']],
-] as const)('sorts by %s with zero, missing values and stable ties', async (sort, expectedIds) => {
+] as const)('сортирует по %s с учётом нулевых, отсутствующих и одинаковых значений', async (sort, expectedIds) => {
   const user = await renderControls()
   await user.selectOptions(screen.getByRole('combobox', { name: 'Sort by' }), sort)
 
@@ -402,7 +402,7 @@ it.each([
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('applies sorting after search and status without mutating the loaded array', async () => {
+it('применяет сортировку после поиска и фильтра статуса, не изменяя загруженный массив', async () => {
   const data = [...controlsRuns]
   const originalIds = data.map((run) => run.id)
   Object.freeze(data)
@@ -419,7 +419,7 @@ it('applies sorting after search and status without mutating the loaded array', 
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('restores all controls and results from the initial URL', async () => {
+it('восстанавливает все элементы управления и выдачу из начального URL', async () => {
   const url = new URL(window.location.href)
   url.search = '?status=succeeded&sort=longest'
   url.searchParams.set('q', '  INVOICE  ')
@@ -432,7 +432,7 @@ it('restores all controls and results from the initial URL', async () => {
   expect(visibleRunNames()).toEqual(['Invoice matching'])
 })
 
-it('persists changes using replaceState without losing history state, unrelated params or hash', async () => {
+it('сохраняет изменения через replaceState без потери состояния истории, остальных параметров и hash', async () => {
   window.history.replaceState({ scroll: 42 }, '', '/?mockError=1&campaign=demo#history')
   const historyLength = window.history.length
   const pushState = vi.spyOn(window.history, 'pushState')
@@ -454,7 +454,7 @@ it('persists changes using replaceState without losing history state, unrelated 
   expect(pushState).not.toHaveBeenCalled()
 })
 
-it('removes default query parameters when controls return to default values', async () => {
+it('удаляет параметры URL при возврате элементов управления к значениям по умолчанию', async () => {
   window.history.replaceState(null, '', '/?q=invoice&status=succeeded&sort=longest&mockError=1')
   const user = await renderControls()
   await user.clear(screen.getByRole('searchbox'))
@@ -465,7 +465,7 @@ it('removes default query parameters when controls return to default values', as
   expect(visibleRunNames()).toHaveLength(7)
 })
 
-it('restores persisted settings after unmounting and mounting the page again', async () => {
+it('восстанавливает сохранённые настройки после повторного монтирования страницы', async () => {
   vi.mocked(getRuns).mockResolvedValue(controlsRuns)
   const user = userEvent.setup()
   const firstPage = render(<RunsPage />)
@@ -481,7 +481,7 @@ it('restores persisted settings after unmounting and mounting the page again', a
   expect(visibleRunNames()).toEqual(['Invoice matching', 'Daily reconciliation'])
 })
 
-it('uses defaults for invalid status and sort values without clearing the search', async () => {
+it('использует значения по умолчанию для некорректных статуса и сортировки, сохраняя поиск', async () => {
   window.history.replaceState(null, '', '/?q=ledger&status=unknown&sort=invalid')
   await renderControls()
 
@@ -491,7 +491,7 @@ it('uses defaults for invalid status and sort values without clearing the search
   expect(visibleRunNames()).toEqual(['Invoice importer', 'Daily reconciliation', 'Invoice matching'])
 })
 
-it('updates controls and results on popstate without reloading runs', async () => {
+it('обновляет элементы управления и выдачу по popstate без повторной загрузки запусков', async () => {
   await renderControls()
   window.history.pushState(null, '', '/?q=ledger&status=succeeded&sort=oldest')
   fireEvent(window, new PopStateEvent('popstate'))
@@ -509,7 +509,7 @@ it('updates controls and results on popstate without reloading runs', async () =
   expect(getRuns).toHaveBeenCalledTimes(1)
 })
 
-it('keeps search, status, sort and the visible list after closing details', async () => {
+it('сохраняет поиск, статус, сортировку и видимый список после закрытия деталей', async () => {
   const user = await renderControls()
   await user.type(screen.getByRole('searchbox'), 'ledger')
   await user.click(screen.getByRole('button', { name: 'Succeeded' }))
