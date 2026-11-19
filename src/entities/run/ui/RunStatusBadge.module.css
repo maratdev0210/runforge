@@ -1,0 +1,17 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+.queued { color: #4b5564; background: #e9edf1; border-color: #cdd5df; }
+.running { color: #204ca0; background: #e5edff; border-color: #adc4ef; }
+.succeeded { color: #1f634c; background: #e4f2e8; border-color: #b1d5be; }
+.failed { color: #9b3540; background: #fbe8e8; border-color: #e9b6bb; }
